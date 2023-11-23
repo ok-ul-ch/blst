@@ -15,14 +15,15 @@ pub enum BLST_ERROR {
 pub type byte = u8;
 pub type limb_t = u64;
 #[repr(C)]
-#[derive(Debug, Default, Clone, PartialEq, Eq, Zeroize)]
+#[derive(Debug, Default, Clone, PartialEq, Eq, Zeroize, Hash)]
 #[zeroize(drop)]
 pub struct blst_scalar {
     pub b: [byte; 32usize],
 }
 #[test]
 fn bindgen_test_layout_blst_scalar() {
-    const UNINIT: ::core::mem::MaybeUninit<blst_scalar> = ::core::mem::MaybeUninit::uninit();
+    const UNINIT: ::core::mem::MaybeUninit<blst_scalar> =
+        ::core::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::core::mem::size_of::<blst_scalar>(),
@@ -52,7 +53,8 @@ pub struct blst_fr {
 }
 #[test]
 fn bindgen_test_layout_blst_fr() {
-    const UNINIT: ::core::mem::MaybeUninit<blst_fr> = ::core::mem::MaybeUninit::uninit();
+    const UNINIT: ::core::mem::MaybeUninit<blst_fr> =
+        ::core::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::core::mem::size_of::<blst_fr>(),
@@ -76,13 +78,14 @@ fn bindgen_test_layout_blst_fr() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct blst_fp {
     pub l: [limb_t; 6usize],
 }
 #[test]
 fn bindgen_test_layout_blst_fp() {
-    const UNINIT: ::core::mem::MaybeUninit<blst_fp> = ::core::mem::MaybeUninit::uninit();
+    const UNINIT: ::core::mem::MaybeUninit<blst_fp> =
+        ::core::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::core::mem::size_of::<blst_fp>(),
@@ -106,13 +109,14 @@ fn bindgen_test_layout_blst_fp() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct blst_fp2 {
     pub fp: [blst_fp; 2usize],
 }
 #[test]
 fn bindgen_test_layout_blst_fp2() {
-    const UNINIT: ::core::mem::MaybeUninit<blst_fp2> = ::core::mem::MaybeUninit::uninit();
+    const UNINIT: ::core::mem::MaybeUninit<blst_fp2> =
+        ::core::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::core::mem::size_of::<blst_fp2>(),
@@ -142,7 +146,8 @@ pub struct blst_fp6 {
 }
 #[test]
 fn bindgen_test_layout_blst_fp6() {
-    const UNINIT: ::core::mem::MaybeUninit<blst_fp6> = ::core::mem::MaybeUninit::uninit();
+    const UNINIT: ::core::mem::MaybeUninit<blst_fp6> =
+        ::core::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::core::mem::size_of::<blst_fp6>(),
@@ -172,7 +177,8 @@ pub struct blst_fp12 {
 }
 #[test]
 fn bindgen_test_layout_blst_fp12() {
-    const UNINIT: ::core::mem::MaybeUninit<blst_fp12> = ::core::mem::MaybeUninit::uninit();
+    const UNINIT: ::core::mem::MaybeUninit<blst_fp12> =
+        ::core::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::core::mem::size_of::<blst_fp12>(),
@@ -250,10 +256,18 @@ extern "C" {
     pub fn blst_sk_inverse(out: *mut blst_scalar, a: *const blst_scalar);
 }
 extern "C" {
-    pub fn blst_scalar_from_le_bytes(out: *mut blst_scalar, in_: *const byte, len: usize) -> bool;
+    pub fn blst_scalar_from_le_bytes(
+        out: *mut blst_scalar,
+        in_: *const byte,
+        len: usize,
+    ) -> bool;
 }
 extern "C" {
-    pub fn blst_scalar_from_be_bytes(out: *mut blst_scalar, in_: *const byte, len: usize) -> bool;
+    pub fn blst_scalar_from_be_bytes(
+        out: *mut blst_scalar,
+        in_: *const byte,
+        len: usize,
+    ) -> bool;
 }
 extern "C" {
     pub fn blst_fr_add(ret: *mut blst_fr, a: *const blst_fr, b: *const blst_fr);
@@ -355,10 +369,18 @@ extern "C" {
     pub fn blst_lendian_from_fp(ret: *mut byte, a: *const blst_fp);
 }
 extern "C" {
-    pub fn blst_fp2_add(ret: *mut blst_fp2, a: *const blst_fp2, b: *const blst_fp2);
+    pub fn blst_fp2_add(
+        ret: *mut blst_fp2,
+        a: *const blst_fp2,
+        b: *const blst_fp2,
+    );
 }
 extern "C" {
-    pub fn blst_fp2_sub(ret: *mut blst_fp2, a: *const blst_fp2, b: *const blst_fp2);
+    pub fn blst_fp2_sub(
+        ret: *mut blst_fp2,
+        a: *const blst_fp2,
+        b: *const blst_fp2,
+    );
 }
 extern "C" {
     pub fn blst_fp2_mul_by_3(ret: *mut blst_fp2, a: *const blst_fp2);
@@ -367,10 +389,18 @@ extern "C" {
     pub fn blst_fp2_mul_by_8(ret: *mut blst_fp2, a: *const blst_fp2);
 }
 extern "C" {
-    pub fn blst_fp2_lshift(ret: *mut blst_fp2, a: *const blst_fp2, count: usize);
+    pub fn blst_fp2_lshift(
+        ret: *mut blst_fp2,
+        a: *const blst_fp2,
+        count: usize,
+    );
 }
 extern "C" {
-    pub fn blst_fp2_mul(ret: *mut blst_fp2, a: *const blst_fp2, b: *const blst_fp2);
+    pub fn blst_fp2_mul(
+        ret: *mut blst_fp2,
+        a: *const blst_fp2,
+        b: *const blst_fp2,
+    );
 }
 extern "C" {
     pub fn blst_fp2_sqr(ret: *mut blst_fp2, a: *const blst_fp2);
@@ -394,7 +424,11 @@ extern "C" {
     pub fn blst_fp12_cyclotomic_sqr(ret: *mut blst_fp12, a: *const blst_fp12);
 }
 extern "C" {
-    pub fn blst_fp12_mul(ret: *mut blst_fp12, a: *const blst_fp12, b: *const blst_fp12);
+    pub fn blst_fp12_mul(
+        ret: *mut blst_fp12,
+        a: *const blst_fp12,
+        b: *const blst_fp12,
+    );
 }
 extern "C" {
     pub fn blst_fp12_mul_by_xy00z0(
@@ -410,10 +444,15 @@ extern "C" {
     pub fn blst_fp12_inverse(ret: *mut blst_fp12, a: *const blst_fp12);
 }
 extern "C" {
-    pub fn blst_fp12_frobenius_map(ret: *mut blst_fp12, a: *const blst_fp12, n: usize);
+    pub fn blst_fp12_frobenius_map(
+        ret: *mut blst_fp12,
+        a: *const blst_fp12,
+        n: usize,
+    );
 }
 extern "C" {
-    pub fn blst_fp12_is_equal(a: *const blst_fp12, b: *const blst_fp12) -> bool;
+    pub fn blst_fp12_is_equal(a: *const blst_fp12, b: *const blst_fp12)
+        -> bool;
 }
 extern "C" {
     pub fn blst_fp12_is_one(a: *const blst_fp12) -> bool;
@@ -425,7 +464,7 @@ extern "C" {
     pub fn blst_fp12_one() -> *const blst_fp12;
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Eq)]
+#[derive(Debug, Default, Copy, Clone, Eq, Hash)]
 pub struct blst_p1 {
     pub x: blst_fp,
     pub y: blst_fp,
@@ -433,7 +472,8 @@ pub struct blst_p1 {
 }
 #[test]
 fn bindgen_test_layout_blst_p1() {
-    const UNINIT: ::core::mem::MaybeUninit<blst_p1> = ::core::mem::MaybeUninit::uninit();
+    const UNINIT: ::core::mem::MaybeUninit<blst_p1> =
+        ::core::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::core::mem::size_of::<blst_p1>(),
@@ -477,14 +517,15 @@ fn bindgen_test_layout_blst_p1() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Eq)]
+#[derive(Debug, Default, Copy, Clone, Eq, Hash)]
 pub struct blst_p1_affine {
     pub x: blst_fp,
     pub y: blst_fp,
 }
 #[test]
 fn bindgen_test_layout_blst_p1_affine() {
-    const UNINIT: ::core::mem::MaybeUninit<blst_p1_affine> = ::core::mem::MaybeUninit::uninit();
+    const UNINIT: ::core::mem::MaybeUninit<blst_p1_affine> =
+        ::core::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::core::mem::size_of::<blst_p1_affine>(),
@@ -521,10 +562,18 @@ extern "C" {
     pub fn blst_p1_add(out: *mut blst_p1, a: *const blst_p1, b: *const blst_p1);
 }
 extern "C" {
-    pub fn blst_p1_add_or_double(out: *mut blst_p1, a: *const blst_p1, b: *const blst_p1);
+    pub fn blst_p1_add_or_double(
+        out: *mut blst_p1,
+        a: *const blst_p1,
+        b: *const blst_p1,
+    );
 }
 extern "C" {
-    pub fn blst_p1_add_affine(out: *mut blst_p1, a: *const blst_p1, b: *const blst_p1_affine);
+    pub fn blst_p1_add_affine(
+        out: *mut blst_p1,
+        a: *const blst_p1,
+        b: *const blst_p1_affine,
+    );
 }
 extern "C" {
     pub fn blst_p1_add_or_double_affine(
@@ -537,7 +586,12 @@ extern "C" {
     pub fn blst_p1_double(out: *mut blst_p1, a: *const blst_p1);
 }
 extern "C" {
-    pub fn blst_p1_mult(out: *mut blst_p1, p: *const blst_p1, scalar: *const byte, nbits: usize);
+    pub fn blst_p1_mult(
+        out: *mut blst_p1,
+        p: *const blst_p1,
+        scalar: *const byte,
+        nbits: usize,
+    );
 }
 extern "C" {
     pub fn blst_p1_cneg(p: *mut blst_p1, cbit: bool);
@@ -570,7 +624,10 @@ extern "C" {
     pub fn blst_p1_affine_in_g1(p: *const blst_p1_affine) -> bool;
 }
 extern "C" {
-    pub fn blst_p1_affine_is_equal(a: *const blst_p1_affine, b: *const blst_p1_affine) -> bool;
+    pub fn blst_p1_affine_is_equal(
+        a: *const blst_p1_affine,
+        b: *const blst_p1_affine,
+    ) -> bool;
 }
 extern "C" {
     pub fn blst_p1_affine_is_inf(a: *const blst_p1_affine) -> bool;
@@ -579,7 +636,7 @@ extern "C" {
     pub fn blst_p1_affine_generator() -> *const blst_p1_affine;
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Eq)]
+#[derive(Debug, Default, Copy, Clone, Eq, Hash)]
 pub struct blst_p2 {
     pub x: blst_fp2,
     pub y: blst_fp2,
@@ -587,7 +644,8 @@ pub struct blst_p2 {
 }
 #[test]
 fn bindgen_test_layout_blst_p2() {
-    const UNINIT: ::core::mem::MaybeUninit<blst_p2> = ::core::mem::MaybeUninit::uninit();
+    const UNINIT: ::core::mem::MaybeUninit<blst_p2> =
+        ::core::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::core::mem::size_of::<blst_p2>(),
@@ -631,14 +689,15 @@ fn bindgen_test_layout_blst_p2() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, Eq)]
+#[derive(Debug, Default, Copy, Clone, Eq, Hash)]
 pub struct blst_p2_affine {
     pub x: blst_fp2,
     pub y: blst_fp2,
 }
 #[test]
 fn bindgen_test_layout_blst_p2_affine() {
-    const UNINIT: ::core::mem::MaybeUninit<blst_p2_affine> = ::core::mem::MaybeUninit::uninit();
+    const UNINIT: ::core::mem::MaybeUninit<blst_p2_affine> =
+        ::core::mem::MaybeUninit::uninit();
     let ptr = UNINIT.as_ptr();
     assert_eq!(
         ::core::mem::size_of::<blst_p2_affine>(),
@@ -675,10 +734,18 @@ extern "C" {
     pub fn blst_p2_add(out: *mut blst_p2, a: *const blst_p2, b: *const blst_p2);
 }
 extern "C" {
-    pub fn blst_p2_add_or_double(out: *mut blst_p2, a: *const blst_p2, b: *const blst_p2);
+    pub fn blst_p2_add_or_double(
+        out: *mut blst_p2,
+        a: *const blst_p2,
+        b: *const blst_p2,
+    );
 }
 extern "C" {
-    pub fn blst_p2_add_affine(out: *mut blst_p2, a: *const blst_p2, b: *const blst_p2_affine);
+    pub fn blst_p2_add_affine(
+        out: *mut blst_p2,
+        a: *const blst_p2,
+        b: *const blst_p2_affine,
+    );
 }
 extern "C" {
     pub fn blst_p2_add_or_double_affine(
@@ -691,7 +758,12 @@ extern "C" {
     pub fn blst_p2_double(out: *mut blst_p2, a: *const blst_p2);
 }
 extern "C" {
-    pub fn blst_p2_mult(out: *mut blst_p2, p: *const blst_p2, scalar: *const byte, nbits: usize);
+    pub fn blst_p2_mult(
+        out: *mut blst_p2,
+        p: *const blst_p2,
+        scalar: *const byte,
+        nbits: usize,
+    );
 }
 extern "C" {
     pub fn blst_p2_cneg(p: *mut blst_p2, cbit: bool);
@@ -724,7 +796,10 @@ extern "C" {
     pub fn blst_p2_affine_in_g2(p: *const blst_p2_affine) -> bool;
 }
 extern "C" {
-    pub fn blst_p2_affine_is_equal(a: *const blst_p2_affine, b: *const blst_p2_affine) -> bool;
+    pub fn blst_p2_affine_is_equal(
+        a: *const blst_p2_affine,
+        b: *const blst_p2_affine,
+    ) -> bool;
 }
 extern "C" {
     pub fn blst_p2_affine_is_inf(a: *const blst_p2_affine) -> bool;
@@ -740,10 +815,17 @@ extern "C" {
     );
 }
 extern "C" {
-    pub fn blst_p1s_add(ret: *mut blst_p1, points: *const *const blst_p1_affine, npoints: usize);
+    pub fn blst_p1s_add(
+        ret: *mut blst_p1,
+        points: *const *const blst_p1_affine,
+        npoints: usize,
+    );
 }
 extern "C" {
-    pub fn blst_p1s_mult_wbits_precompute_sizeof(wbits: usize, npoints: usize) -> usize;
+    pub fn blst_p1s_mult_wbits_precompute_sizeof(
+        wbits: usize,
+        npoints: usize,
+    ) -> usize;
 }
 extern "C" {
     pub fn blst_p1s_mult_wbits_precompute(
@@ -800,10 +882,17 @@ extern "C" {
     );
 }
 extern "C" {
-    pub fn blst_p2s_add(ret: *mut blst_p2, points: *const *const blst_p2_affine, npoints: usize);
+    pub fn blst_p2s_add(
+        ret: *mut blst_p2,
+        points: *const *const blst_p2_affine,
+        npoints: usize,
+    );
 }
 extern "C" {
-    pub fn blst_p2s_mult_wbits_precompute_sizeof(wbits: usize, npoints: usize) -> usize;
+    pub fn blst_p2s_mult_wbits_precompute_sizeof(
+        wbits: usize,
+        npoints: usize,
+    ) -> usize;
 }
 extern "C" {
     pub fn blst_p2s_mult_wbits_precompute(
@@ -853,10 +942,18 @@ extern "C" {
     );
 }
 extern "C" {
-    pub fn blst_map_to_g1(out: *mut blst_p1, u: *const blst_fp, v: *const blst_fp);
+    pub fn blst_map_to_g1(
+        out: *mut blst_p1,
+        u: *const blst_fp,
+        v: *const blst_fp,
+    );
 }
 extern "C" {
-    pub fn blst_map_to_g2(out: *mut blst_p2, u: *const blst_fp2, v: *const blst_fp2);
+    pub fn blst_map_to_g2(
+        out: *mut blst_p2,
+        u: *const blst_fp2,
+        v: *const blst_fp2,
+    );
 }
 extern "C" {
     pub fn blst_encode_to_g1(
@@ -915,10 +1012,16 @@ extern "C" {
     pub fn blst_p1_affine_compress(out: *mut byte, in_: *const blst_p1_affine);
 }
 extern "C" {
-    pub fn blst_p1_uncompress(out: *mut blst_p1_affine, in_: *const byte) -> BLST_ERROR;
+    pub fn blst_p1_uncompress(
+        out: *mut blst_p1_affine,
+        in_: *const byte,
+    ) -> BLST_ERROR;
 }
 extern "C" {
-    pub fn blst_p1_deserialize(out: *mut blst_p1_affine, in_: *const byte) -> BLST_ERROR;
+    pub fn blst_p1_deserialize(
+        out: *mut blst_p1_affine,
+        in_: *const byte,
+    ) -> BLST_ERROR;
 }
 extern "C" {
     pub fn blst_p2_serialize(out: *mut byte, in_: *const blst_p2);
@@ -933,10 +1036,16 @@ extern "C" {
     pub fn blst_p2_affine_compress(out: *mut byte, in_: *const blst_p2_affine);
 }
 extern "C" {
-    pub fn blst_p2_uncompress(out: *mut blst_p2_affine, in_: *const byte) -> BLST_ERROR;
+    pub fn blst_p2_uncompress(
+        out: *mut blst_p2_affine,
+        in_: *const byte,
+    ) -> BLST_ERROR;
 }
 extern "C" {
-    pub fn blst_p2_deserialize(out: *mut blst_p2_affine, in_: *const byte) -> BLST_ERROR;
+    pub fn blst_p2_deserialize(
+        out: *mut blst_p2_affine,
+        in_: *const byte,
+    ) -> BLST_ERROR;
 }
 extern "C" {
     pub fn blst_keygen(
@@ -951,13 +1060,21 @@ extern "C" {
     pub fn blst_sk_to_pk_in_g1(out_pk: *mut blst_p1, SK: *const blst_scalar);
 }
 extern "C" {
-    pub fn blst_sign_pk_in_g1(out_sig: *mut blst_p2, hash: *const blst_p2, SK: *const blst_scalar);
+    pub fn blst_sign_pk_in_g1(
+        out_sig: *mut blst_p2,
+        hash: *const blst_p2,
+        SK: *const blst_scalar,
+    );
 }
 extern "C" {
     pub fn blst_sk_to_pk_in_g2(out_pk: *mut blst_p2, SK: *const blst_scalar);
 }
 extern "C" {
-    pub fn blst_sign_pk_in_g2(out_sig: *mut blst_p1, hash: *const blst_p1, SK: *const blst_scalar);
+    pub fn blst_sign_pk_in_g2(
+        out_sig: *mut blst_p1,
+        hash: *const blst_p1,
+        SK: *const blst_scalar,
+    );
 }
 extern "C" {
     pub fn blst_miller_loop(
@@ -978,7 +1095,10 @@ extern "C" {
     pub fn blst_final_exp(ret: *mut blst_fp12, f: *const blst_fp12);
 }
 extern "C" {
-    pub fn blst_precompute_lines(Qlines: *mut blst_fp6, Q: *const blst_p2_affine);
+    pub fn blst_precompute_lines(
+        Qlines: *mut blst_fp6,
+        Q: *const blst_p2_affine,
+    );
 }
 extern "C" {
     pub fn blst_miller_loop_lines(
@@ -988,7 +1108,10 @@ extern "C" {
     );
 }
 extern "C" {
-    pub fn blst_fp12_finalverify(gt1: *const blst_fp12, gt2: *const blst_fp12) -> bool;
+    pub fn blst_fp12_finalverify(
+        gt1: *const blst_fp12,
+        gt2: *const blst_fp12,
+    ) -> bool;
 }
 #[repr(C)]
 #[repr(align(1))]
@@ -1131,10 +1254,16 @@ extern "C" {
     ) -> BLST_ERROR;
 }
 extern "C" {
-    pub fn blst_pairing_merge(ctx: *mut blst_pairing, ctx1: *const blst_pairing) -> BLST_ERROR;
+    pub fn blst_pairing_merge(
+        ctx: *mut blst_pairing,
+        ctx1: *const blst_pairing,
+    ) -> BLST_ERROR;
 }
 extern "C" {
-    pub fn blst_pairing_finalverify(ctx: *const blst_pairing, gtsig: *const blst_fp12) -> bool;
+    pub fn blst_pairing_finalverify(
+        ctx: *const blst_pairing,
+        gtsig: *const blst_fp12,
+    ) -> bool;
 }
 extern "C" {
     pub fn blst_aggregate_in_g1(
@@ -1151,10 +1280,16 @@ extern "C" {
     ) -> BLST_ERROR;
 }
 extern "C" {
-    pub fn blst_aggregated_in_g1(out: *mut blst_fp12, signature: *const blst_p1_affine);
+    pub fn blst_aggregated_in_g1(
+        out: *mut blst_fp12,
+        signature: *const blst_p1_affine,
+    );
 }
 extern "C" {
-    pub fn blst_aggregated_in_g2(out: *mut blst_fp12, signature: *const blst_p2_affine);
+    pub fn blst_aggregated_in_g2(
+        out: *mut blst_fp12,
+        signature: *const blst_p2_affine,
+    );
 }
 extern "C" {
     pub fn blst_core_verify_pk_in_g1(
@@ -1195,10 +1330,18 @@ extern "C" {
     pub static BLS12_381_NEG_G2: blst_p2_affine;
 }
 extern "C" {
-    pub fn blst_fr_ct_bfly(x0: *mut blst_fr, x1: *mut blst_fr, twiddle: *const blst_fr);
+    pub fn blst_fr_ct_bfly(
+        x0: *mut blst_fr,
+        x1: *mut blst_fr,
+        twiddle: *const blst_fr,
+    );
 }
 extern "C" {
-    pub fn blst_fr_gs_bfly(x0: *mut blst_fr, x1: *mut blst_fr, twiddle: *const blst_fr);
+    pub fn blst_fr_gs_bfly(
+        x0: *mut blst_fr,
+        x1: *mut blst_fr,
+        twiddle: *const blst_fr,
+    );
 }
 extern "C" {
     pub fn blst_fr_to(ret: *mut blst_fr, a: *const blst_fr);
@@ -1280,7 +1423,11 @@ extern "C" {
     pub fn blst_uniq_init(tree: *mut blst_uniq);
 }
 extern "C" {
-    pub fn blst_uniq_test(tree: *mut blst_uniq, msg: *const byte, len: usize) -> bool;
+    pub fn blst_uniq_test(
+        tree: *mut blst_uniq,
+        msg: *const byte,
+        len: usize,
+    ) -> bool;
 }
 extern "C" {
     pub fn blst_expand_message_xmd(
@@ -1353,7 +1500,11 @@ extern "C" {
     );
 }
 extern "C" {
-    pub fn blst_derive_master_eip2333(out_SK: *mut blst_scalar, IKM: *const byte, IKM_len: usize);
+    pub fn blst_derive_master_eip2333(
+        out_SK: *mut blst_scalar,
+        IKM: *const byte,
+        IKM_len: usize,
+    );
 }
 extern "C" {
     pub fn blst_derive_child_eip2333(
